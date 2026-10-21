@@ -1,0 +1,13 @@
+{
+  "title": "Учреждения культуры области Абай",
+  "period": 2024,
+  "retrievedAt": "2026-10-20",
+  "source": "https://www.gov.kz/org/abay/press/article/details/173804",
+  "publisher": "Управление культуры, развития языков и архивного дела области Абай",
+  "method": "Вручную перенесённый срез опубликованных государственных данных за 2024 год; не текущий онлайн-счётчик.",
+  "rows": [
+    {"id":"libraries","count":137,"label":{"ru":"библиотек","en":"libraries","kk":"кітапхана"}},
+    {"id":"museums","count":4,"label":{"ru":"музея","en":"museums","kk":"музей"}},
+    {"id":"language-centres","count":1,"label":{"ru":"лингвистический центр","en":"language centre","kk":"лингвистикалық орталық"}}
+  ]
+}

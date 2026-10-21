@@ -1,0 +1,9 @@
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './App';
+import './styles.css';
+import './v2.css';
+import './age-experience.css';
+import './motion.css';
+import './library-audio.css';
+createRoot(document.getElementById('root')!).render(<React.StrictMode><App/></React.StrictMode>);

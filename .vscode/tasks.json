@@ -1,0 +1,16 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "SÖZ: запустить приложение",
+      "type": "process",
+      "command": "${env:LOCALAPPDATA}/Programs/NodeJS/node-v24.22.0-win-x64/node.exe",
+      "args": ["server/dev.mjs"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "isBackground": true,
+      "problemMatcher": [],
+      "group": { "kind": "build", "isDefault": true },
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+import type {Age,Book,Lang,Lesson,Local,Question,Word} from './content';
+const L=(ru:string,en:string,kk:string):Local=>({ru,en,kk});
+const mix=<T,>(a:T[])=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;};
+export function childLessonQuestions(item:Lesson,lang:Lang,bank:Record<string,Word>):Question[]{
+ const list=item.wordIds.map(id=>bank[id]).filter(Boolean);
+ return list.flatMap((word,i)=>{
+  const options=mix([word,...mix(list.filter(w=>w.id!==word.id)).slice(0,2)]);
+  const prompt=word.id==='salem'?L('Встретили друга и машем рукой. Как поздороваться?','We meet a friend and wave. How do we say hello?','Досымызды кездестірдік. Қалай амандасамыз?'):word.id==='sau'?L('Уходим домой и машем другу. Как попрощаться?','We leave for home and wave. How do we say goodbye?','Үйге кетіп барамыз. Қалай қоштасамыз?'):word.id==='rahmet'?L('Друг помог нам. Как поблагодарить?','A friend helped us. How do we say thank you?','Досымыз көмектесті. Қалай алғыс айтамыз?'):L('Посмотри на картинку. Как это по-казахски?','Look at the picture. What is it in Kazakh?','Суретке қара. Қазақша қалай аталады?');
+  return [{id:`${item.id}-${i}`,type:'image' as const,wordId:word.id,visual:word.id,prompt,answer:word.kk,options:options.map(w=>w.kk),explanation:L(`${word.kk} — ${word.ru}.`,`${word.kk} — ${word.en}.`,`${word.kk} — дұрыс жауап.`)},
+  {id:`${item.id}-picture-${i}`,type:'choice' as const,prompt:L(`Найди картинку: «${word.kk}»`,`Find the picture: “${word.kk}”`,`«${word.kk}» суретін тап`),answer:word.kk,options:mix(options).map(w=>w.kk),pictureOptions:options.map(w=>({value:w.kk,art:w.id,label:L(w.ru,w.en,w.kk)})),explanation:L(`${word.kk} — ${word.ru}.`,`${word.kk} — ${word.en}.`,`${word.kk} — дұрыс жауап.`)}];
+ });
+}
+export function seniorQuestions(input:Question[],bank:Word[]):Question[]{return input.flatMap(q=>{
+ if(q.type==='crossword')return [];
+ if(q.type==='match')return [{...q,pairs:q.pairs?.slice(0,3)}];
+ if(q.type==='gap')return [{...q,type:'choice' as const,prompt:L('Выберите слово для пропуска','Choose the missing word','Бос орынға сөз таңдаңыз'),options:mix([q.answer,...mix(bank.filter(w=>w.kk.toLowerCase()!==q.answer.toLowerCase())).slice(0,2).map(w=>w.kk)])}];
+ if(q.type==='order')return [];
+ return [{...q,options:q.wordId?mix([q.answer,...mix(bank.filter(w=>w.kk!==q.answer)).slice(0,2).map(w=>w.kk)]):q.options.length>3?mix([q.answer,...q.options.filter(o=>o!==q.answer).slice(0,2)]):q.options}];
+});}
+type Picture=[string,string,string,string];
+const p=(art:string,kk:string,ru:string,en:string):Picture=>[art,kk,ru,en];
+const bird=p('kus','Құс','Птица','Bird'),seed=p('seed','Дән','Семечко','Seed'),flower=p('gul','Гүл','Цветок','Flower'),water=p('su','Су','Вода','Water'),apple=p('alma','Алма','Яблоко','Apple'),grandma=p('azhe','Әже','Бабушка','Grandmother'),sun=p('kun','Күн','Солнце','Sun'),snow=p('snow','Қар','Снег','Snow'),mitten=p('mitten','Қолғап','Варежка','Mitten'),house=p('snow-house','Қар үйі','Снежный домик','Snow house'),tea=p('tea','Шай','Чай','Tea'),pot=p('pot','Құмыра','Горшок','Pot'),sprout=p('sprout','Өскін','Росток','Sprout'),three=p('ush','Үш','Три','Three'),dombra=p('dombra','Домбыра','Домбра','Dombra'),sing=p('sing','Ән айту','Петь','Sing'),clap=p('clap','Қол шапалақтау','Аплодировать','Clap'),rain=p('rain','Жаңбыр','Дождь','Rain'),book=p('book','Кітап','Книга','Book'),library=p('library','Кітапхана','Библиотека','Library');
+type Check=[Local,Picture,Picture,Picture];
+const checks:Record<string,Check[]>={
+ 'little-bird':[[L('Кто нашёл семечко? Выбери картинку.','Who found the seed? Pick a picture.','Дәнді кім тапты? Суретті таңда.'),bird,grandma,apple],[L('Что птица посадила в землю?','What did the bird plant?','Құс жерге не екті?'),seed,book,mitten],[L('Что согревало землю?','What warmed the ground?','Жерді не жылытты?'),sun,snow,tea],[L('Что выросло в конце сказки?','What grew at the end?','Ертегі соңында не өсті?'),flower,house,dombra]],
+ 'grandma-garden':[[L('У кого был сад?','Who had the garden?','Бақ кімде болды?'),grandma,bird,clap],[L('Что росло в саду?','What grew in the garden?','Бақта не өсті?'),apple,book,mitten],[L('Что принесли бабушке?','What was brought to grandmother?','Әжеге не әкелді?'),water,dombra,snow],[L('Найди яблоко и назови: «Алма».','Find the apple and say “Alma”.','Алманы тауып, «Алма» деп айт.'),apple,flower,pot]],
+ 'mitten':[[L('Что потеряла Аяла?','What did Ayala lose?','Аяла нені жоғалтты?'),mitten,book,dombra],[L('Что лежало в саду?','What covered the garden?','Бақта не жатты?'),snow,flower,seed],[L('Где нашли варежку?','Where was the mitten found?','Қолғап қайдан табылды?'),house,pot,library],[L('Кто гулял с Аялой?','Who walked with Ayala?','Аяла кіммен серуендеді?'),grandma,bird,sprout],[L('Что было готово дома?','What was ready at home?','Үйде не дайын болды?'),tea,apple,seed]],
+ 'three-seeds':[[L('Сколько семечек дал дедушка?','How many seeds did grandfather give?','Атасы неше дән берді?'),three,p('bir','Бір','Один','One'),p('eki','Екі','Два','Two')],[L('Куда посадили семечки?','Where were the seeds planted?','Дәндер қайда егілді?'),pot,library,mitten],[L('Что нужно растению для роста?','What does a plant need to grow?','Өсімдікке өсу үшін не керек?'),water,book,dombra],[L('Что появилось через несколько дней?','What appeared after a few days?','Бірнеше күннен кейін не шықты?'),sprout,house,snow],[L('Найди то, что посадил Марат.','Find what Marat planted.','Марат еккен нәрсені тап.'),seed,apple,tea]],
+ 'quiet-dombra':[[L('На чём играл брат?','What did the brother play?','Ағасы нені тартты?'),dombra,book,pot],[L('Что хотел делать Нур?','What did Nur want to do?','Нұр не істегісі келді?'),sing,p('run','Жүгіру','Бежать','Run'),p('sit','Отыру','Сидеть','Sit')],[L('Кто улыбнулся Нуру?','Who smiled at Nur?','Нұрға кім күлді?'),grandma,bird,flower],[L('Что сделали гости после песни?','What did the guests do after the song?','Әннен кейін қонақтар не істеді?'),clap,p('sleep','Ұйықтау','Спать','Sleep'),p('run','Жүгіру','Бежать','Run')],[L('Найди инструмент из рассказа.','Find the instrument in the story.','Әңгімедегі аспапты тап.'),dombra,tea,house]],
+ 'rainy-library':[[L('Из-за чего Айша зашла в здание?','Why did Aisha enter the building?','Айша неге ғимаратқа кірді?'),rain,sun,snow],[L('Куда она зашла?','Where did she go?','Ол қайда кірді?'),library,house,pot],[L('Что лежало на столе?','What was on the table?','Үстелде не жатты?'),book,mitten,apple],[L('О ком была история в книге?','Who was the story in the book about?','Кітаптағы әңгіме не туралы болды?'),bird,grandma,dombra],[L('Найди то, что читала Айша.','Find what Aisha was reading.','Айша оқыған затты тап.'),book,seed,tea]]
+};
+export function childReadingQuestions(b:Book,lang:Lang):Question[]{
+ if(b.storyPages&&b.comprehension)return b.comprehension.map((check,i)=>({id:'reading-'+b.id+'-'+i,type:'choice',prompt:check.prompt,answer:check.options[check.answer][lang],options:mix(check.options.map(o=>o[lang])),optionLanguage:'ui',visual:'scene:'+b.storyPages![Math.min(i,b.storyPages!.length-1)].image,visualLabel:b.storyPages![Math.min(i,b.storyPages!.length-1)].caption,explanation:check.explanation||check.options[check.answer]}));
+ return (checks[b.id]||[]).map(([prompt,...choices],i)=>{const answer=choices[0][1];return {id:`reading-${b.id}-${i}`,type:'choice',prompt,answer,options:mix(choices).map(c=>c[1]),pictureOptions:choices.map(([art,value,ru,en])=>({value,art,label:L(ru,en,value)})),explanation:L(`${answer} — ${choices[0][2]}.`,`${answer} — ${choices[0][3]}.`,`${answer} — дұрыс жауап.`)};});}
+export function adaptReviewForAge(qs:Question[],age:Age,bank:Record<string,Word>):Question[]{
+ if(age!=='child')return qs;
+ return qs.filter(q=>q.visual||q.pictureOptions?.length).map(q=>({...q,options:q.options.slice(0,3)}));
+}
+

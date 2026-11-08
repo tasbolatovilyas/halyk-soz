@@ -5,6 +5,7 @@ import {everydayReading} from './everyday-reading';
 import {childLessonQuestions,seniorQuestions} from './age-questions';
 import {decorateBooks} from './book-art';
 import {expandContent} from './expanded-content';
+import {addAdditionalContent} from './additional-content';
 export type Lang='ru'|'en'|'kk';
 export type Age='child'|'adult'|'senior';
 export type Level='A0'|'A1'|'A2'|'B1'|'B2'|'C1'|'C2';
@@ -116,8 +117,8 @@ const glossRows=[
 glossRows.push(['қазақ','казахский / казах','Kazakh'],['хандығының','ханства (родительный падеж)','of the khanate'],['құрылуы','образование / основание','founding'],['керей','Керей','Kerei'],['жәнібек','Жанибек','Zhanibek'],['есімдерімен','с именами','with the names'],['байланысты','связан / связано','associated with'],['мұхаммед','Мухаммед','Muhammad'],['хайдар','Хайдар','Haydar'],['дулати','Дулати','Dulati'],['оқиғаны','событие (дополнение)','the event'],['жылдарға','к годам','to the years'],['жатқызады','относит','dates / attributes'],['мемлекеттілігі','государственность','statehood'],['тарихындағы','в истории','in the history of'],['белес','веха','milestone'],['жылғы','относящийся к году','of the year'],['қазанда','в октябре','in October'],['егемендік','суверенитет','sovereignty'],['декларация','декларация','declaration'],['желтоқсанда','в декабре','in December'],['тәуелсіздігі','независимость','independence'],['заң','закон','law'],['оқиға','событие','event'],['ел','страна','country'],['тарихында','в истории','in history'],['ерекше','особый','special'],['орын','место','place'],['алады','берёт / занимает','takes / holds'],['ғылым','наука / знания','science / knowledge'],['таппай','не найдя','without finding'],['мақтанба','не хвались','do not boast'],['баптанба','не успокаивайся / не довольствуйся','do not settle'],['құмарланып','увлекаясь','being absorbed'],['шаттанба','не радуйся (здесь: пустому)','do not delight (here: in idle things)'],['босқа','напрасно','idly / in vain'],['күлуге','смеяться','to laugh']);
 for(const [key,ru,en]of glossRows)glossary[key.replace(/[^а-яәғқңөұүһіa-z0-9]/gi,'')]={ru,en};
 expandContent({lessons,words,wordMap,books,glossary});
-books.push(everydayReading); decorateBooks(books); addCultureContent({lessons,words,wordMap,books,glossary}); addLeisureContent({lessons,words,wordMap,books,glossary}); enrichGlosses(glossary);
-export const safeBooks=(age:Age,level:Level='C2')=>books.filter(b=>(!b.ages||b.ages.includes(age))&&(age!=='child'||b.childSafe)&&levels.indexOf(b.level)<=levels.indexOf(age==='child'?'A0':level));
+books.push(everydayReading); decorateBooks(books); addCultureContent({lessons,words,wordMap,books,glossary}); addLeisureContent({lessons,words,wordMap,books,glossary}); enrichGlosses(glossary); addAdditionalContent({lessons,words,wordMap,books,glossary});
+export const safeBooks=(age:Age,level:Level='C2')=>books.filter(b=>(!b.ages||b.ages.includes(age))&&(age!=='child'||b.childSafe)&&(age==='child'||levels.indexOf(b.level)<=levels.indexOf(level)));
 export const availableLessons=(age:Age,level:Level)=>lessons.filter(x=>x.ages.includes(age)&&levels.indexOf(x.level)<=levels.indexOf(level));
 export const normalize=(value:string)=>value.toLocaleLowerCase().replace(/[.,!?—–]/g,'').replace(/\s+/g,' ').trim();
 

@@ -8,4 +8,4 @@ export const useScript=()=>useContext(ScriptContext);
 export const scriptText=(text:string,script:Script)=>script==='latin'?toLatin(text):text;
 export const normalized=(text:string)=>text.normalize('NFKC').toLocaleLowerCase().replace(/\u0307/g,'').replace(/[.,!?—–:;«»“”"']/g,'').replace(/\s+/g,' ').trim();
 export const answerMatches=(input:string,expected:string)=>normalized(input)===normalized(expected)||normalized(input)===normalized(toLatin(expected));
-export function K({children}:{children:string}){return <>{scriptText(children,useScript())}</>;}
+export function K({children}:{children:string}){return <span lang="kk">{scriptText(children,useScript())}</span>;}

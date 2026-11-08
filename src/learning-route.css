@@ -1,0 +1,4 @@
+.learning-route{margin:1rem 0 1.5rem;padding:clamp(1rem,3vw,2rem);border:1px solid #b7cdc4;border-radius:1.25rem;background:#f3f8f4;color:#193e35}
+.learning-route h2{margin:0 0 .8rem}.learning-route label,.learning-route progress{display:block}.learning-route progress{width:100%;height:.85rem;margin:.4rem 0 1rem;accent-color:#18594f}
+.learning-route button,.learning-route summary{cursor:pointer;font:inherit}.learning-route .route-action{background:#18594f;color:white;border:0;border-radius:.65rem;padding:.7rem 1rem;text-align:start}
+.learning-route details{margin:.9rem 0}.learning-route li{padding:.2rem 0}.learning-route li button{background:none;border:0;color:inherit;text-decoration:underline;text-align:start}.learning-route :focus-visible{outline:3px solid #955309;outline-offset:3px}

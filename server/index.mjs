@@ -53,7 +53,17 @@ const server=http.createServer(async(req,res)=>{
   }
   const user=userFor(req);if(!user)return reply(res,401,{error:'Войдите в аккаунт'});
   if(url.pathname==='/api/logout'){const token=(req.headers.cookie||'').split(';').map(s=>s.trim()).find(s=>s.startsWith('soz_session='))?.slice(12);db.prepare('DELETE FROM sessions WHERE token=?').run(token||'');res.setHeader('Set-Cookie','soz_session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0');return reply(res,200,{ok:true});}
-  if(url.pathname==='/api/profile'){const current=JSON.parse(user.profile);const profile=cleanProfile(current.ageGroup==='child'?{...body,ageGroup:'child',level:'A0'}:body);db.prepare('UPDATE users SET profile=? WHERE id=?').run(JSON.stringify(profile),user.id);return reply(res,200,{profile});}
+  if(url.pathname==='/api/profile'){const current=JSON.parse(user.profile);const profile=cleanProfile({...body,ageGroup:current.ageGroup,level:current.level});db.prepare('UPDATE users SET profile=? WHERE id=?').run(JSON.stringify(profile),user.id);return reply(res,200,{profile});}
+  if(url.pathname==='/api/level'){
+   const current=JSON.parse(user.profile),progress={...empty,...JSON.parse(user.progress)};
+   const levels=['A0','A1','A2','B1','B2','C1','C2'],from=String(body.from||''),to=String(body.level||'');
+   if(current.ageGroup==='child'||from!==current.level||levels[levels.indexOf(from)+1]!==to||!progress.completed.includes('exam-'+from))return reply(res,403,{error:'Сначала завершите уроки уровня и успешно сдайте итоговый тест.'});
+   const profile=cleanProfile({...current,level:to});db.prepare('UPDATE users SET profile=? WHERE id=?').run(JSON.stringify(profile),user.id);return reply(res,200,{profile});
+  }
+  if(url.pathname==='/api/reset-account'){
+   db.prepare('DELETE FROM sessions WHERE user_id=?').run(user.id);db.prepare('DELETE FROM users WHERE id=?').run(user.id);
+   res.setHeader('Set-Cookie','soz_session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0');return reply(res,200,{ok:true});
+  }
   if(url.pathname==='/api/progress'){const progress=safeProgress(body);db.prepare('UPDATE users SET progress=? WHERE id=?').run(JSON.stringify(progress),user.id);return reply(res,200,{progress});}
   return reply(res,404,{error:'Не найдено'});
  }catch(error){console.error(error.message);reply(res,400,{error:error.message||'Ошибка сервера'});}

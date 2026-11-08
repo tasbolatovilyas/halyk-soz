@@ -3,7 +3,7 @@ const img=(s:string)=>'./images/'+s+'.png';
 const scenes:Record<string,string[]>={
  'neighbours-tea':['history-dombra','reading'],
  'little-bird':['children-bird','children-garden'], 'grandma-garden':['children-garden','children-bird'],
- mitten:['children-snow-story','children-snow-story'], 'three-seeds':['children-garden','children-garden'],
+ mitten:['children-snow-story','children-mitten'], 'three-seeds':['children-garden','children-bird'],
  'quiet-dombra':['children-dombra','history-dombra'], 'rainy-library':['children-library','reading'],
  yurt:['history-dombra','steppe'], flag:['history-independence','steppe'],republic:['history-independence','history-archive'],
  abai:['history-school','reading'], 'abai-poem':['reading','history-school'],nauryz:['children-garden','history-dombra'],

@@ -194,6 +194,55 @@ body{color:var(--text)}
 .app-shell.adult .quick-nav{color:#24483a}
 .app-shell.adult .quick-nav>button.active{color:#234c38}
 .app-shell.adult .quick-nav>button:focus-visible{outline-offset:-4px}
+.app-shell.adult .learning-route{position:relative;overflow:hidden;border:1px solid #c7cbb9;border-radius:18px;background:#f4f3e9;box-shadow:0 12px 30px #243d280d}
+.app-shell.adult .learning-route:before{content:"";position:absolute;inset:0 auto 0 0;width:6px;background:linear-gradient(#bb8754,#315d49)}
+.app-shell.adult .route-heading{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.app-shell.adult .route-eyebrow{font-size:10px;letter-spacing:1.6px;font-weight:800;color:#8b6742}
+.app-shell.adult .route-level{display:grid;place-items:center;width:54px;height:54px;border-radius:50%;background:#eadcc7;color:#24483a;font-weight:800;font-size:15px}
+.app-shell.adult .route-next{display:grid;grid-template-columns:145px 1fr;gap:16px;align-items:center;margin-top:15px}
+.app-shell.adult .route-next>span{font-size:11px;letter-spacing:1px;color:#65705b;font-weight:750}
+.app-shell.adult .route-action{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:14px 18px;border-radius:12px;background:#285d49;box-shadow:0 4px 0 #1e4939;color:#fff;transition:transform .15s,box-shadow .15s}
+.app-shell.adult .route-action:hover{transform:translateY(-2px);box-shadow:0 6px 0 #1e4939}
+.app-shell.adult .route-action-hint{font-size:12px;color:#f2dfbc;white-space:nowrap}
+.app-shell.adult .route-details{margin-top:16px}
+.app-shell.adult .route-details summary{color:#315d49;font-weight:650}
+.app-shell.adult .route-details li[aria-current="step"]{font-weight:700;color:#24483a}
+.app-shell.adult .focus-lesson{border-radius:18px;overflow:hidden;border-color:#d5c5a8;background:#eae7d9}
+.app-shell.adult .focus-copy>span{color:#8b6742}
+.app-shell.adult .focus-copy>.primary{box-shadow:0 4px 0 #1c4a39}
+.app-shell.senior .learning-route{border:2px solid #66786a;border-radius:10px;background:#fff;color:#17291d;padding:clamp(20px,3vw,32px);box-shadow:none}
+.app-shell.senior .route-heading{display:flex;justify-content:space-between;align-items:center;gap:18px}
+.app-shell.senior .route-eyebrow{display:block;color:#263e2e;font-size:16px;line-height:1.5;font-weight:750;letter-spacing:.04em}
+.app-shell.senior .route-heading h2{font-size:30px;line-height:1.25;margin:.45rem 0;color:#17291d}
+.app-shell.senior .route-level{display:grid;place-items:center;min-width:64px;height:64px;border:2px solid #526b59;border-radius:10px;color:#17291d;font-size:20px;font-weight:800}
+.app-shell.senior .route-progress-label{font-size:19px;line-height:1.6;color:#253a2c}
+.app-shell.senior .route-progress-label strong{font-size:20px}
+.app-shell.senior .route-progress-label progress{height:18px;accent-color:#24593b}
+.app-shell.senior .route-next{display:grid;gap:9px;margin-top:18px}
+.app-shell.senior .route-next>span{font-size:16px;line-height:1.5;color:#263e2e;font-weight:750;letter-spacing:.04em}
+.app-shell.senior .route-action{width:100%;min-height:68px;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 18px;border:2px solid #174c31;border-radius:8px;background:#174c31;color:white;text-align:left;font-size:21px;font-weight:700;line-height:1.4}
+.app-shell.senior .route-action-hint{font-size:16px;font-weight:500;color:#fff;white-space:normal}
+.app-shell.senior .route-details{margin-top:18px}
+.app-shell.senior .route-details summary{min-height:52px;display:flex;align-items:center;font-size:19px;line-height:1.5;color:#173b2b;text-decoration:underline;text-underline-offset:4px}
+.app-shell.senior .route-details li{padding:8px 0;font-size:18px;line-height:1.55}
+.app-shell.senior .route-details li button{min-height:44px;color:#173b2b}
+.app-shell.senior .route-details li[aria-current="step"]{font-weight:750}
+.app-shell.senior .learning-route>small{display:block;margin-top:15px;font-size:16px;line-height:1.6;color:#263e2e}
+.app-shell.senior .focus-lesson{border:2px solid #66786a;border-radius:10px;background:#fff}
+.app-shell.senior .focus-copy>span{font-size:15px;letter-spacing:.04em;color:#263e2e}
+.app-shell.senior .focus-copy h2{color:#17291d}
+.app-shell.senior .focus-copy>.primary{background:#174c31;box-shadow:none}
+.app-shell.senior .focus-copy>.text-btn{text-decoration:underline;text-underline-offset:4px}
+@media(max-width:700px){
+  .app-shell.adult .route-next{grid-template-columns:1fr;gap:8px}
+  .app-shell.adult .route-action{min-height:56px}
+  .app-shell.adult .route-action-hint{font-size:11px}
+  .app-shell.senior .route-heading h2{font-size:27px}
+  .app-shell.senior .route-level{min-width:56px;height:56px}
+  .app-shell.senior .route-action{align-items:flex-start;flex-direction:column;justify-content:center;min-height:74px;gap:4px;font-size:20px}
+  .app-shell.senior .route-action-hint{font-size:16px}
+  .app-shell.senior .route-progress-label{font-size:18px}
+}
 @media(max-width:900px){
   .app-shell.adult .quick-nav{position:fixed;inset:auto 0 0;z-index:24;display:flex;justify-content:stretch;max-width:none;width:100%;gap:3px;margin:0;padding:6px 8px calc(6px + env(safe-area-inset-bottom));border-top:1px solid #cfd7c5;border-bottom:0;background:#fff;box-shadow:0 -5px 20px #243d281a}
   .app-shell.adult .quick-nav>button{flex:1;max-width:none;min-width:0;min-height:68px;display:flex;flex-direction:column;justify-content:center;gap:4px;padding:5px 3px;border:0;border-radius:12px;color:#345640;font-size:12px;line-height:1.25;text-align:center}

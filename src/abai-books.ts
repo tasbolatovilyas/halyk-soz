@@ -12,7 +12,7 @@ export function abaiBooks(profile: Profile): Book[] {
   paragraphsPerPage: 1,
  };
  const sentence = (kk: string) => ({kk, ru: '', en: ''});
- return [{
+ const collection: Book = {
   ...common,
   id: 'abai-words',
   image: './images/abai-words.png',
@@ -28,7 +28,8 @@ export function abaiBooks(profile: Profile): Book[] {
   check: l('Что Абай советует делать с полезными знаниями?', 'What does Abai encourage us to do with useful knowledge?', 'Абай пайдалы білім туралы қандай кеңес береді?'),
   options: [l('Учиться и применять знания', 'Learn and put knowledge to use', 'Үйреніп, білгеніңді қолдану'), l('Учиться ради похвалы', 'Learn for praise', 'Мақтау үшін оқу'), l('Полагаться только на богатство', 'Rely only on wealth', 'Тек байлыққа сену')],
   answer: 0,
- }, {
+ };
+ const journey: Book = {
   ...common,
   id: 'abai-journey',
   title: l('Путь Абая', 'The Path of Abai', 'Абай жолы'),
@@ -39,7 +40,17 @@ export function abaiBooks(profile: Profile): Book[] {
   check: l('Кем стал Абай?', 'What did Abai become?', 'Абай кім болды?'),
   options: [l('Поэтом', 'A poet', 'Ақын'), l('Купцом', 'A merchant', 'Саудагер'), l('Врачом', 'A doctor', 'Дәрігер')],
   answer: 0,
- }];
+ };
+ const words: Book[] = collection.sentences.map(({kk}, index) => ({
+  ...collection,
+  id: 'abai-word-' + (index + 1),
+  genre: 'abai',
+  title: l('Абай · Слово ' + (index + 1), 'Abai · Word ' + (index + 1), (index + 1) + '-қара сөз'),
+  source: originals[index].source,
+  sentences: kk.split('\n\n').slice(1).map(sentence),
+  paragraphsPerPage: 3,
+ }));
+ return [journey, ...words];
 }
 
 export const abaiGlossary: Record<string, {ru: string; en: string}> = {

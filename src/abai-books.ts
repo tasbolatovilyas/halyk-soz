@@ -15,6 +15,7 @@ export function abaiBooks(profile: Profile): Book[] {
  return [{
   ...common,
   id: 'abai-words',
+  image: './images/abai-words.png',
   title: l('Слова назидания Абая', 'Abai’s Words of Edification', 'Абайдың қара сөздері'),
   description: l('45 слов Абая с озвучкой и словарём', '45 readings with audio and vocabulary', '45 қара сөз, дыбыстау және сөздік'),
   source: 'https://abai.institute/qara-sozder',

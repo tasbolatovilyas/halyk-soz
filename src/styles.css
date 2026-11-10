@@ -19,3 +19,12 @@
 
 .bookmark-toggle{display:inline-flex;align-items:center;gap:9px;min-height:42px;padding:0 14px;border:1px solid #c8d6b9;border-radius:7px;background:#edf3e5;color:#547242;font-size:12px;font-weight:650}.bookmark-toggle:hover{background:#e2ecd7}.bookmark-toggle[aria-pressed="true"]{background:#e5eddd}
 .crossword-keys{margin:20px 0 12px}.crossword-keys button{min-width:36px;width:auto;padding:0 8px;height:38px;font-size:15px;touch-action:manipulation}
+
+.abai-original{max-width:70ch;overflow-wrap:anywhere}
+.vocab-card .abai-original p{font-size:1rem;line-height:1.75;margin:0.9em 0}
+.abai-library{display:grid;gap:1.5rem}
+.abai-library .vocab-card{display:block}
+.abai-library img{max-width:100%;border-radius:0.5rem;margin-bottom:1rem}
+.abai-library details{margin:1rem 0}
+.abai-library details p{max-width:70ch;font-size:1rem;line-height:1.75;margin:0.65rem 0}
+.abai-library summary{cursor:pointer}

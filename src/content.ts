@@ -85,7 +85,7 @@ export function questionsFor(item:Lesson,language:Lang,age:Age):Question[]{
  return shuffle(age==='senior'?seniorQuestions(out,list):out);
 }
 export type Sentence={kk:string;ru:string;en:string};
-export type Book={id:string;title:Local;genre:'fairytale'|'history'|'tradition'|'literature'|'legend';level:Level;childSafe:boolean;ages?:Age[];color:string;art:string;description:Local;sentences:Sentence[];source?:string;image?:string;storyPages?:{image:string;caption:Local}[];illustrations?:{image:string;after:number;caption:Local}[];year?:string;comprehension?:{prompt:Local;options:Local[];answer:number;explanation?:Local}[];author?:Local;note?:'adaptation'|'legend';check:Local;options:Local[];answer:number};
+export type Book={id:string;title:Local;genre:'fairytale'|'history'|'tradition'|'literature'|'legend';level:Level;childSafe:boolean;ages?:Age[];color:string;art:string;description:Local;sentences:Sentence[];paragraphsPerPage?:number;source?:string;image?:string;storyPages?:{image:string;caption:Local}[];illustrations?:{image:string;after:number;caption:Local}[];year?:string;comprehension?:{prompt:Local;options:Local[];answer:number;explanation?:Local}[];author?:Local;note?:'adaptation'|'legend';check:Local;options:Local[];answer:number};
 const s=(kk:string,ru:string,en:string):Sentence=>({kk,ru,en});
 export const genres={fairytale:l('Сказки','Fairy tales','Ертегілер'),history:l('История','History','Тарих'),tradition:l('Традиции','Traditions','Дәстүрлер'),literature:l('Литература','Literature','Әдебиет'),legend:l('Легенды','Legends','Аңыздар')};
 export const books:Book[]=[

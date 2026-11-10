@@ -28,3 +28,4 @@
 .abai-library details{margin:1rem 0}
 .abai-library details p{max-width:70ch;font-size:1rem;line-height:1.75;margin:0.65rem 0}
 .abai-library summary{cursor:pointer}
+.reading-text p[lang=kk]{white-space:pre-wrap}

@@ -10,7 +10,7 @@ export const supabase=cloudAuthEnabled?createClient(url!,publishableKey!,{
  auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true},
 }):null;
 
-const emptyProgress:Progress={completed:[],words:[],mistakes:[],activity:[]};
+const emptyProgress:Progress={completed:[],words:[],mistakes:[],activity:[],customWords:[]};
 
 export async function loadCloudAccount(userId:string,fallbackProfile:Profile){
  if(!supabase)throw new Error('Облачные аккаунты пока не настроены.');

@@ -11,5 +11,6 @@ export function cleanProfile(input) {
 }
 export function safeProgress(input) {
   const ids=(list)=>Array.isArray(list)?[...new Set(list.filter(x=>typeof x==='string'&&/^[a-z0-9-]{1,60}$/i.test(x)))].slice(0,300):[];
-  return {completed:ids(input.completed),words:ids(input.words),mistakes:ids(input.mistakes),activity:ids(input.activity)};
+  const customWords=Array.isArray(input.customWords)?input.customWords.filter(w=>w&&typeof w.id==='string'&&/^[a-z0-9-]{1,60}$/i.test(w.id)).slice(0,300).map(w=>({id:w.id,kk:String(w.kk||'').slice(0,100),ru:String(w.ru||'').slice(0,240),en:String(w.en||'').slice(0,240),icon:'book'})):[];
+  return {completed:ids(input.completed),words:ids(input.words),mistakes:ids(input.mistakes),activity:ids(input.activity),customWords};
 }

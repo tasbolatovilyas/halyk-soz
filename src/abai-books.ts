@@ -1,4 +1,4 @@
-import firstWordTranslations from './abai-first-word-translations.json';
+import advancedTranslations from './abai-advanced-translations.json';
 import {journeyTranslations} from './abai-journey-translations';
 import summaryTranslations from './abai-summary-translations.json';
 import originals from './abai-originals.json';
@@ -72,13 +72,12 @@ export function abaiBooks(profile: Profile): Book[] {
   title: l('Абай · Слово ' + (index + 1), 'Abai · Word ' + (index + 1), (index + 1) + '-қара сөз'),
   source: originals[index].source,
   sentences: advanced
-   ? index === 0
-    ? kk.split('\n\n').slice(1).flatMap(splitSentences).map((text, part) => ({
-     kk: text, en: firstWordTranslations[part][0], ru: firstWordTranslations[part][1],
+   ? kk.split('\n\n').slice(1).flatMap(splitSentences).map((text, part) => ({
+     kk: text, en: advancedTranslations[index][part][0], ru: advancedTranslations[index][part][1],
     }))
-    : kk.split('\n\n').slice(1).map(sentence)
    : translatedSentences(summaries[index], summaryTranslations[index]),
   paragraphsPerPage: 3,
+  translationSource: advanced ? 'https://translate.google.com/' : undefined,
  }));
  return [journey, ...words];
 }

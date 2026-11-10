@@ -1,7 +1,23 @@
+import {journeyTranslations} from './abai-journey-translations';
+import summaryTranslations from './abai-summary-translations.json';
 import originals from './abai-originals.json';
 import {summaries, childJourney, adultJourney, journeyContext} from './abai';
 import {l, type Book} from './content';
 import type {Profile} from './types';
+
+const childJourneyTranslations = [
+ ['В детстве Абай слушал рассказы бабушки Зере и матери Улжан. Он любил сказки и стихи.', 'As a child, Abai listened to stories from his grandmother Zere and his mother Ulzhan. He loved fairy tales and poetry.'],
+ ['Абай учился в Семее. Он многое узнал из книг. Вернувшись в аул, он хотел понять, почему люди спорят друг с другом.', 'Abai studied in Semey. He learned a great deal from books. On returning to his village, he wanted to understand why people were quarrelling.'],
+ ['Повзрослев, Абай писал стихи. Он призывал людей учиться, честно трудиться и быть добрыми друг к другу. Мухтар Ауэзов написал о его жизни роман «Путь Абая».', 'As an adult, Abai wrote poetry. He encouraged people to learn, work honestly, and be kind to each other. Mukhtar Auezov wrote the novel The Path of Abai about his life.'],
+];
+const splitSentences = (text: string) => text.split(/(?<=[.!?])\s+/);
+function translatedSentences(text: string, [ru, en]: string[]) {
+ const russian = splitSentences(ru);
+ const english = splitSentences(en);
+ return splitSentences(text).map((kk, index) => ({
+  kk, ru: russian[index] || '', en: english[index] || '',
+ }));
+}
 
 export function abaiBooks(profile: Profile): Book[] {
  const child = profile.ageGroup === 'child';
@@ -32,11 +48,18 @@ export function abaiBooks(profile: Profile): Book[] {
  const journey: Book = {
   ...common,
   id: 'abai-journey',
+  paragraphsPerPage: child ? 3 : 6,
   title: l('Путь Абая', 'The Path of Abai', 'Абай жолы'),
   description: l('Пересказ романа Мухтара Ауэзова', 'A retelling of Mukhtar Auezov’s novel', 'Мұхтар Әуезов романының мазмұны'),
   source: 'https://auezovmuseum.kz/ru/history',
   note: 'adaptation',
-  sentences: (child ? childJourney : adultJourney.map((chapter, index) => [chapter.title, chapter.text, journeyContext[index]].join('\n\n'))).map(sentence),
+  sentences: child
+   ? childJourney.flatMap((text, index) => translatedSentences(text, childJourneyTranslations[index]))
+   : adultJourney.flatMap((chapter, index) => [
+    sentence(chapter.title),
+    ...translatedSentences(chapter.text, journeyTranslations[index][0]),
+    ...translatedSentences(journeyContext[index], journeyTranslations[index][1]),
+   ]),
   check: l('Кем стал Абай?', 'What did Abai become?', 'Абай кім болды?'),
   options: [l('Поэтом', 'A poet', 'Ақын'), l('Купцом', 'A merchant', 'Саудагер'), l('Врачом', 'A doctor', 'Дәрігер')],
   answer: 0,
@@ -47,7 +70,9 @@ export function abaiBooks(profile: Profile): Book[] {
   genre: 'abai',
   title: l('Абай · Слово ' + (index + 1), 'Abai · Word ' + (index + 1), (index + 1) + '-қара сөз'),
   source: originals[index].source,
-  sentences: kk.split('\n\n').slice(1).map(sentence),
+  sentences: advanced
+   ? kk.split('\n\n').slice(1).map(sentence)
+   : translatedSentences(summaries[index], summaryTranslations[index]),
   paragraphsPerPage: 3,
  }));
  return [journey, ...words];
@@ -69,5 +94,20 @@ export const abaiGlossary: Record<string, {ru: string; en: string}> = {
  ұстаным: {ru: 'убеждение, принцип', en: 'conviction, principle'},
  әулет: {ru: 'род, семья', en: 'family lineage'},
  өткінші: {ru: 'преходящий', en: 'fleeting'},
+ білім: {ru: 'знание, образование', en: 'knowledge, education'},
+ бірлік: {ru: 'единство', en: 'unity'},
+ мақсат: {ru: 'цель', en: 'purpose'},
+ мақал: {ru: 'пословица', en: 'proverb'},
+ мақтау: {ru: 'похвала', en: 'praise'},
+ мақтан: {ru: 'хвастовство', en: 'boasting'},
+ қулық: {ru: 'хитрость', en: 'cunning'},
+ зейін: {ru: 'внимание', en: 'attention'},
+ ұят: {ru: 'стыд, совесть', en: 'shame, conscience'},
+ жаратылыс: {ru: 'творение, мироздание', en: 'creation'},
+ тағдыр: {ru: 'судьба', en: 'fate'},
+ қоныс: {ru: 'место поселения, стоянка', en: 'settlement, encampment'},
+ дау: {ru: 'спор, тяжба', en: 'dispute'},
+ үкім: {ru: 'приговор, решение', en: 'verdict'},
+ қайғы: {ru: 'горе', en: 'grief'},
  намыс: {ru: 'честь, достоинство', en: 'honour, dignity'},
 };
